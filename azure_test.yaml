@@ -1,0 +1,33 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+
+#### NOTE : SLEEP INFINITY COMMAND TO BE ABLE TO DEBUG/MONITOR; HOLDS COMPUTE INSTANCE
+command: bash run_test.sh; sleep infinity
+display_name: agentic-test-sibyl ### for display
+experiment_name: test_origin ### for display under experiment groups
+code: .
+environment: azureml:agentic-env-sibyl:6 #### can be any other environment you pick
+
+### services we want access to for debug/monitor when job is running
+services:
+  my_jupyterlab:
+    type: jupyter_lab
+    nodes: all
+  my_vscode:
+    type: vs_code
+    nodes: all
+### specify compute here. Examples : SINGLE-A100-DEV | NCAI-A100-LLMv6 | H100-clusterv2
+compute: azureml:NCAI-A100-LLMv9 
+
+resources:
+  instance_count: 1
+  shm_size: 1250g
+
+#### KEEP THIS COMMENDED; THIS IS THE COMMAND TO RUN LOCALLY TO UPLOAD AND LAUNCH JOB ON SERVER
+
+# az ml job create --subscription c7209a17-0d9f-41df-8e45-e0172343698d \
+#     --resource-group LLM-Test \
+#     --workspace-name Provisioning-Test \
+#     --file "azure_test.yaml"
+
+#### can add this option
+# rm azure_hal.yaml
